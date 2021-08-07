@@ -136,6 +136,7 @@ jobs:
             cd frontend
             npm i
             npm audit fix --audit-level=critical --force
+            node -v
       - restore_cache:
           key: v1-frontend-build
 
@@ -150,6 +151,7 @@ jobs:
             cd backend
             npm i
             npm audit fix --audit-level=critical --force
+            node -v
       - restore_cache:
           key: v1-backend-build
 
@@ -263,6 +265,7 @@ jobs:
           working_directory: ./backend
           command: |
             npm install
+            npm install pm2 -g
             npm run migrations > migration_status
             echo migration_status
             wc -l migration_status
