@@ -296,7 +296,7 @@ jobs:
           at: ~/
       - run:
           name: Install AWS CLI dependencies
-          working_directory: /home/circleci/frontend
+          working_directory: ~/project/
           command: |
             # sudo apt-get update && sudo apt-get install -yy less
             # sudo apt-get install unzip -y
@@ -305,7 +305,6 @@ jobs:
             # sudo ./aws/install
             ls -la ~/project/
             ls -la ~/frontend/
-            ls -la ~/home/circleci/.circleci/
             ls -la /home/circleci/frontend/
       - run:
           name: Get backend url
@@ -324,7 +323,7 @@ jobs:
       - run:
           name: Build frontend
           command: |
-            cd /home/circleci/frontend
+            cd ~/project/frontend/
             sudo npm install -g webpack webpack-cli
             sudo npm install -g npm
             sudo npm run build
@@ -333,14 +332,14 @@ jobs:
           name: Deploy frontend objects
           # working_directory: /home/circleci/frontend
           command: |
-            cd /home/circleci/frontend
+            cd ~/project/frontend/
             ls -la ./dist
             aws s3 cp ./dist "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
             echo "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}"
       - persist_to_workspace:
           root: .
           paths:
-            - frontend/dist
+            - ~/project/frontend/
       # Here's where you will add some code to rollback on failure
       # - revert-migrations     
       # - destroy-environment 
