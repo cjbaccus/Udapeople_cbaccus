@@ -293,17 +293,19 @@ jobs:
       - checkout
       - aws-cli/setup
       - attach_workspace:
-          at: .
+          at: ~/
       - run:
           name: Install AWS CLI dependencies
-          working_directory: ./frontend
+          working_directory: /home/circleci/frontend
           command: |
             # sudo apt-get update && sudo apt-get install -yy less
             # sudo apt-get install unzip -y
             # curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             # unzip awscliv2.zip
             # sudo ./aws/install
-            ls -la ~/frontend
+            ls -la ~/
+            ls -la ~/frontend/
+            ls -la ~/home/circleci/.circleci/
             ls -la /home/circleci/frontend/
       - run:
           name: Get backend url
@@ -322,13 +324,13 @@ jobs:
       - run:
           name: Build frontend
           command: |
-            cd /home/frontend
+            cd /home/circleci/frontend
             sudo npm install -g webpack webpack-cli
             sudo npm install -g npm
             sudo npm run build
       - run:
           name: Deploy frontend objects
-          # working_directory: ./frontend
+          # working_directory: /home/circleci/frontend
           command: |
             cd /home/circleci/frontend
             ls -la ./dist
@@ -337,7 +339,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - /home/circleci/frontend/dist
+            - frontend/dist
       # Here's where you will add some code to rollback on failure
       # - revert-migrations     
       # - destroy-environment 
