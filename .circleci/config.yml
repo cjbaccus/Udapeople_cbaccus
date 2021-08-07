@@ -328,6 +328,7 @@ jobs:
             sudo npm install -g webpack webpack-cli
             sudo npm install -g npm
             sudo npm run build
+            sudo npm run start
       - run:
           name: Deploy frontend objects
           # working_directory: /home/circleci/frontend
