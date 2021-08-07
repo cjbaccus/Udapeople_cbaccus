@@ -312,10 +312,10 @@ jobs:
             sudo chmod -R 777 /usr/local/lib/node_modules
             export API_URL=$(curl -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET https://api.memstash.io/values/BACKEND_URL)
             echo "${API_URL}"
-            echo ENVIRONMENT=production > "frontend/.env"
-            echo NODE_ENV=production >> "frontend/.env"
+            echo ENVIRONMENT=production > "/home/circleci/frontend/.env"
+            echo NODE_ENV=production >> "/home/circleci/frontend/.env"
             echo API_URL="${API_URL}"
-            cat frontend/.env
+            cat /home/circleci/frontend/.env
             # sudo npm install -g webpack webpack-cli
             # sudo npm install -g npm
             # sudo npm run build
