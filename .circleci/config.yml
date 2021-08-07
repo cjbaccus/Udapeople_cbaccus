@@ -309,15 +309,25 @@ jobs:
             sudo chmod -R 777 /usr/local/lib/node_modules
             export API_URL=$(curl -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET https://api.memstash.io/values/BACKEND_URL)
             echo "${API_URL}"
-            sudo npm install -g webpack webpack-cli
-            sudo npm install -g npm
-            sudo npm run build
+            echo ENVIRONMENT=production > "frontend/.env"
+            echo NODE_ENV=production >> "frontend/.env"
+            echo API_URL="${API_URL}"
+            cat frontend/.env
+            # sudo npm install -g webpack webpack-cli
+            # sudo npm install -g npm
+            # sudo npm run build
+      - run:
+          name: Build frontend
+          command: |
+            cd frontend
+            npm run build
       - run:
           name: Deploy frontend objects
           working_directory: ./frontend
           command: |
             ls -la ./dist
             aws s3 cp ./dist "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
+            echo "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}"
       - persist_to_workspace:
           root: .
           paths:
