@@ -291,19 +291,20 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      - aws-cli/setup
       - attach_workspace:
-          at: .
+          at: ~/
       - run:
           name: Install AWS CLI dependencies
-          working_directory: /tmp
+          working_directory: ./frontend
           command: |
-            sudo apt-get update && sudo apt-get install -yy less
-            sudo apt-get install unzip -y
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
+            # sudo apt-get update && sudo apt-get install -yy less
+            # sudo apt-get install unzip -y
+            # curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            # unzip awscliv2.zip
+            # sudo ./aws/install
             ls -la ~/
-            ls -la ~/frontend/
+            ls -la /home/circleci/frontend/
       - run:
           name: Get backend url
           working_directory: ./frontend
