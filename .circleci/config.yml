@@ -241,7 +241,7 @@ jobs:
             pwd &&
             ls -la
             cat inventory
-            ansible-playbook -i inventory configure-server.yml
+            ansible-playbook -i inventory configure-server.yml -vv
       #- destroy-environment        
 
   run-migrations:
@@ -264,10 +264,10 @@ jobs:
           name: Run migrations
           working_directory: ./backend
           command: |
-            npm install
-            npm install pm2 -g
-            npm run migrations > migration_status
-            echo migration_status
+            sudo npm install
+            sudo npm install pm2 -g
+            sudo npm run migrations > migration_status
+            sudo echo migration_status
             wc -l migration_status
       - run:
           name: Send migration results to memstash
@@ -316,6 +316,7 @@ jobs:
           name: Deploy frontend objects
           working_directory: ./frontend
           command: |
+            ls -la ./dist
             aws s3 cp ./dist "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
       - persist_to_workspace:
           root: .

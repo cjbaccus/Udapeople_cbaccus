@@ -1,9 +1,9 @@
 ---
 
 - name: "configuration play." 
-  hosts: all
+  hosts: web
   user: ubuntu
-  gather_facts: false
+  gather_facts: true
   vars:
     - ansible_python_interpreter: /usr/bin/python3
     - ansible_host_key_checking: false
@@ -14,8 +14,10 @@
       wait_for_connection:
         timeout: 90
 
-   # - name: "install python for Ansible."
-      # Your code here
+    - name: "install python for Ansible."
+      become: ture
+      raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
+      changed_when: false
 
   roles:
     - configure-server
