@@ -322,12 +322,13 @@ jobs:
       - run:
           name: Build frontend
           command: |
-            cd frontend
+            cd /home/circleci/frontend
             npm run build
       - run:
           name: Deploy frontend objects
           working_directory: ./frontend
           command: |
+            cd /home/circleci/frontend
             ls -la ./dist
             aws s3 cp ./dist "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
             echo "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}"
