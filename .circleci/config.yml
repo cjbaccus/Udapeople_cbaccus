@@ -282,45 +282,45 @@ jobs:
      # Here's where you will add some code to rollback on failure 
       # - destroy-environment      
 
-  # deploy-frontend:
-  #   docker:
-  #     - image: circleci/node:13.8.0
-  #   steps:
-  #     # Checkout code from git
-  #     - checkout
-  #     - attach_workspace:
-  #         at: .
-  #     - run:
-  #         name: Install AWS CLI dependencies
-  #         working_directory: /tmp
-  #         command: |
-  #           sudo apt-get update && sudo apt-get install -yy less
-  #           sudo apt-get install unzip -y
-  #           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-  #           unzip awscliv2.zip
-  #           sudo ./aws/install
-  #     - run:
-  #         name: Get backend url
-  #         working_directory: ./frontend
-  #         command: |
-  #           sudo chmod -R 777 /usr/local/lib/node_modules
-  #           export API_URL=$(curl -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET https://api.memstash.io/values/BACKEND_URL)
-  #           echo "${API_URL}"
-  #           sudo npm install -g webpack webpack-cli
-  #           sudo npm install -g npm
-  #           sudo npm run build
-  #     - run:
-  #         name: Deploy frontend objects
-  #         working_directory: ./frontend
-  #         command: |
-  #           aws s3 cp ./dist "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
-  #     - persist_to_workspace:
-  #         root: .
-  #         paths:
-  #           - frontend/dist
-  #     # Here's where you will add some code to rollback on failure
-  #     - revert-migrations     
-  #     - destroy-environment 
+  deploy-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      # Checkout code from git
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install AWS CLI dependencies
+          working_directory: /tmp
+          command: |
+            sudo apt-get update && sudo apt-get install -yy less
+            sudo apt-get install unzip -y
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+      - run:
+          name: Get backend url
+          working_directory: ./frontend
+          command: |
+            sudo chmod -R 777 /usr/local/lib/node_modules
+            export API_URL=$(curl -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET https://api.memstash.io/values/BACKEND_URL)
+            echo "${API_URL}"
+            sudo npm install -g webpack webpack-cli
+            sudo npm install -g npm
+            sudo npm run build
+      - run:
+          name: Deploy frontend objects
+          working_directory: ./frontend
+          command: |
+            aws s3 cp ./dist "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
+      - persist_to_workspace:
+          root: .
+          paths:
+            - frontend/dist
+      # Here's where you will add some code to rollback on failure
+      - revert-migrations     
+      - destroy-environment 
                     
   deploy-backend:
     docker:
@@ -437,8 +437,8 @@ workflows:
           requires: [deploy-infrastructure]
       - run-migrations:
           requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #     requires: [run-migrations]
+      - deploy-frontend:
+          requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
       # - smoke-test:
