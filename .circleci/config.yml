@@ -323,8 +323,8 @@ jobs:
           name: Build frontend
           command: |
             cd /home/circleci/frontend
-            npm install -g npm
-            npm run build
+            sudo npm install -g npm
+            suod npm run build
       - run:
           name: Deploy frontend objects
           working_directory: ./frontend
