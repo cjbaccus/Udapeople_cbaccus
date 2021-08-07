@@ -341,8 +341,8 @@ jobs:
       #     paths:
       #       - ~/frontend/
       # Here's where you will add some code to rollback on failure
-      # - revert-migrations     
-      # - destroy-environment 
+      - revert-migrations     
+      - destroy-environment 
                     
   deploy-backend:
     docker:
