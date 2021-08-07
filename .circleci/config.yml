@@ -324,7 +324,7 @@ jobs:
           name: Build frontend
           command: |
             cd ~/project/frontend/
-            sudo npm install -g webpack webpack-cli
+            sudo npm install -g webpack
             sudo npm install -g npm
             sudo npm run build
             sudo npm run start
