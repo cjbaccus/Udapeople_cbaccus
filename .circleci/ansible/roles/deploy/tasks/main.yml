@@ -29,7 +29,7 @@
           mv home/circleci/project/backend .
           cd backend
           npm install -g npm@latest
-          npm install -g webpack-dev-server
+          # npm install -g webpack-dev-server
           npm install
           npm run build
           # npm run start
