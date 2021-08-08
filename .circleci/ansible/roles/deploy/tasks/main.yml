@@ -32,9 +32,9 @@
           npm install -g webpack-dev-server
           npm install
           npm run build
-          npm run start
-          # pm2 start npm --name backend -- start
-          # pm2 start -f ./main.js
+          # npm run start
+          pm2 start npm --name backend -- start
+          pm2 start -f ./main.js
     args:
       chdir: /home/ubuntu/uda_app/dist
     environment:
