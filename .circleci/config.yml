@@ -325,7 +325,7 @@ jobs:
           command: |
             cd ~/project/frontend/
             sudo npm install -g npm            
-            sudo npm install -g webpack-dev-server -y
+            sudo npm install -g webpack-dev-server webpack-cli
             sudo npm run build
             sudo npm run start
       - run:
