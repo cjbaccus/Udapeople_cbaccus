@@ -375,8 +375,8 @@ jobs:
             export ANSIBLE_HOST_KEY_CHECKING=False 
             export host_key_checking=False
             export record_host_keys=False
-            cat inventory
-            ansible-playbook -i inventory deploy-backend.yml -vv
+            cat ./.circleci/ansible/inventory
+            ansible-playbook -i ./.circleci/ansible/inventory deploy-backend.yml -vv
       # Here's where you will add some code to rollback on failure
       # - revert-migrations
       # - destroy-environment
