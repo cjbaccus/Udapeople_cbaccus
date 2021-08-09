@@ -12,12 +12,12 @@
       dest: /home/ubuntu/
       recursive: true
 
-  - name: "copy node_modules"
-    become: true
-    synchronize:
-      src: /usr/local/lib/node_modules
-      dest: /home/ubuntu/
-      recursive: true
+  # - name: "copy node_modules"
+  #   become: true
+  #   synchronize:
+  #     src: /usr/local/lib/node_modules
+  #     dest: /home/ubuntu/
+  #     recursive: true
 
   - name: "delete anything that might already be running"
     become: true
