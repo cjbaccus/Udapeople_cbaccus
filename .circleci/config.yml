@@ -360,7 +360,7 @@ jobs:
     
       - run:
           name: Install dependencies
-          working_directory: ./.circleci/ansible
+          #working_directory: ./.circleci/ansible
           command: |
             apk add --update ansible curl rsync openssh nodejs npm
             ansible --version
@@ -370,7 +370,7 @@ jobs:
             export ANSIBLE_HOST_KEY_CHECKING=False
       - run:
           name: Deploy backend
-          working_directory: ./.circleci/ansible          
+          #working_directory: ./.circleci/ansible          
           command: |
             export ANSIBLE_HOST_KEY_CHECKING=False 
             export host_key_checking=False
