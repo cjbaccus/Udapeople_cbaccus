@@ -8,10 +8,11 @@
       src: /home/ubuntu/backend.tar.gz
       dest: /home/ubuntu/uda_app
       recursive: true
-     command: |
-           pwd
-           ls -la
-
+  - name: "test what directory we are in"
+    become: yes
+    command: |
+      pwd
+      ls -la
   - name: "copy node_modules"
     become: yes
     synchronize:
