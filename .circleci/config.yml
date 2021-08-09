@@ -78,6 +78,8 @@ jobs:
           name: Frontend Build
           command: |
             cd frontend
+            pwd
+            ls -la
             npm i
             npm run build
       - persist_to_workspace:
@@ -324,10 +326,12 @@ jobs:
           name: Build frontend
           command: |
             cd frontend/
-            sudo npm install -g npm            
-            sudo npm install -g webpack-dev-server webpack-cli
-            sudo npm run build
-            sudo npm run start
+            npm i
+            npm run build
+            #sudo npm install -g npm            
+            #sudo npm install -g webpack-dev-server webpack-cli
+            #sudo npm run build
+            #sudo npm run start
       - run:
           name: Deploy frontend objects
           # working_directory: /home/circleci/frontend
