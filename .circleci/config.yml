@@ -360,7 +360,7 @@ jobs:
     
       - run:
           name: Install dependencies
-          #working_directory: ./.circleci/ansible
+          working_directory: ./.circleci/ansible
           command: |
             apk add --update ansible curl rsync openssh nodejs npm
             ansible --version
@@ -370,16 +370,16 @@ jobs:
             export ANSIBLE_HOST_KEY_CHECKING=False
       - run:
           name: Deploy backend
-          #working_directory: ./.circleci/ansible          
+          working_directory: ./.circleci/ansible          
           command: |
             export ANSIBLE_HOST_KEY_CHECKING=False 
             export host_key_checking=False
             export record_host_keys=False
-            cat ./.circleci/ansible/inventory
-            ansible-playbook -i ./.circleci/ansible/inventory deploy-backend.yml -vv
+            cat inventory
+            ansible-playbook -i inventory deploy-backend.yml -vv
       # Here's where you will add some code to rollback on failure
-      # - revert-migrations
-      # - destroy-environment
+      - revert-migrations
+      - destroy-environment
 
 #   smoke-test:
 #     docker:
