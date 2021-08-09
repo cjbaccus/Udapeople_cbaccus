@@ -5,9 +5,12 @@
   - name: "copy backend binaries"
     become: yes
     synchronize:
-      src: /home/backend.tar.gz
+      src: /home/ubuntu/backend.tar.gz
       dest: /home/ubuntu/uda_app
       recursive: true
+     command: |
+           pwd
+           ls -la
 
   - name: "copy node_modules"
     become: yes
