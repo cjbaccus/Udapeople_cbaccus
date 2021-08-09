@@ -3,9 +3,7 @@
     shell: env
   - name: "test directory stat"
     become: yes
-    command: |
-      pwd
-      ls -la
+    raw: ls -la; pwd
   - name: "copy backend binaries"
     become: yes
     synchronize:
