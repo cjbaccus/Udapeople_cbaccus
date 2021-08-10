@@ -4,7 +4,14 @@
   - name: "test directory stat"
     become: true
     shell: ls -la; pwd
-
+  - name: "install pm2"
+    become: yes
+    npm:
+      name: pm2
+      global: yes
+      production: yes
+      state: present
+      
   - name: "copy backend binaries"
     become: true
     synchronize:
