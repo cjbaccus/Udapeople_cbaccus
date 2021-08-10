@@ -381,23 +381,23 @@ jobs:
       - revert-migrations
       - destroy-environment
 
-  smoke-test:
-    docker:
-      - image: python:3.9.0-alpine
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints: ["44:d1:f0:b5:a1:df:17:11:0c:01:5c:e6:03:a1:86:53"]
-      - attach_workspace:
-          at: .
-      - run:
-          name: Install dependencies
-          command: |
-            apk add update ansible curl rsync openssh nodejs npm
-      - run: Get backend url
-          command: | 
-            export BACKEND_URL=$(sed -n 2p .circleci/ansible/inventory.txt)
-            echo $BACKEND_URL
+  # smoke-test:
+  #   docker:
+  #     - image: python:3.9.0-alpine
+  #   steps:
+  #     - checkout
+  #     - add_ssh_keys:
+  #         fingerprints: ["44:d1:f0:b5:a1:df:17:11:0c:01:5c:e6:03:a1:86:53"]
+  #     - attach_workspace:
+  #         at: .
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           apk add update ansible curl rsync openssh nodejs npm
+  #     - run: Get backend url
+  #         command: | 
+  #           export BACKEND_URL=$(sed -n 2p .circleci/ansible/inventory.txt)
+  #           echo $BACKEND_URL
 
     
 #   smoke-test:
