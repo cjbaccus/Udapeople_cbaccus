@@ -37,15 +37,10 @@
           npm run build
           # npm run start
           pm2 start npm --name backend -- start
-<<<<<<< HEAD
           # pm2 start -f ./main.js
-    args:
-      chdir: /home/ubuntu/dist
-=======
-          pm2 start -f ./main.js
+
    # args:
      # chdir: /home/ubuntu/dist
->>>>>>> bf0afd295f67adc6ac59487219f54c3d3ce4d779
     environment:
      ENVIRONMENT: production
      TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION') }}"
