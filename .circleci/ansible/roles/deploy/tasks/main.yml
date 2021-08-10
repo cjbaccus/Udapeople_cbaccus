@@ -27,7 +27,7 @@
   - name: "start server"
     become: true
     command: |
-          cd /home/ubuntu/backend
+          # cd /home/ubuntu/backend
           # tar xzvf backend.tar.gz
           # mv home/circleci/project/backend .
           # cd backend
@@ -38,8 +38,8 @@
           # npm run start
           pm2 start npm --name backend -- start
           pm2 start -f ./main.js
-    args:
-      chdir: /home/ubuntu/dist
+   # args:
+     # chdir: /home/ubuntu/dist
     environment:
      ENVIRONMENT: production
      TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION') }}"
