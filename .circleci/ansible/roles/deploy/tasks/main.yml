@@ -37,7 +37,7 @@
           npm run build
           # npm run start
           pm2 start npm --name backend -- start
-          pm2 start -f ./main.js
+          # pm2 start -f ./main.js
     args:
       chdir: /home/ubuntu/dist
     environment:
