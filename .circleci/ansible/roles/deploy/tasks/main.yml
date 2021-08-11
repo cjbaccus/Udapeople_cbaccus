@@ -8,8 +8,8 @@
   - name: "copy backend binaries"
     become: true
     synchronize:
-      src: /home/backend.tar.gz
-      dest: /home/ubuntu/backend.tar.gz
+      src: /root/project/backend
+      dest: /home/ubuntu/
       recursive: true
 
   # - name: "copy node_modules"
@@ -28,12 +28,9 @@
     become: true
     command: |
           cd /home/ubuntu/
-          tar xzvf backend.tar.gz
-          mv /home/circlci/project/backend .
-          cd backend
           npm install
           npm run build
-          pm2 start npm --name backend -- start
+          pm2 start npm --name backedn -- start
 
    # args:
      # chdir: /home/ubuntu/dist
