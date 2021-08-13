@@ -340,10 +340,10 @@ jobs:
             ls -la ./dist
             aws s3 cp ./dist "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
             echo "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}"
-      - persist_to_workspace:
-           root: .
-          #  paths:
-          #    - ~/frontend/
+      # - persist_to_workspace:
+      #     root: .
+      #     paths:
+      #       - ~/frontend/
       # Here's where you will add some code to rollback on failure
       - revert-migrations     
       - destroy-environment 
@@ -378,10 +378,6 @@ jobs:
             cat inventory
             ansible-playbook -i inventory deploy-backend.yml -vv
       # Here's where you will add some code to rollback on failure
-      - persist_to_workspace:
-            root: .
-            paths:
-              - ~/.circleci/ansible/
       - revert-migrations
       - destroy-environment
 
@@ -402,25 +398,10 @@ jobs:
             pip install awscli
             aws --version
       - run:
-          name: Get backend url smoke test
+          name: Get backend url
           command: |
-           BACKEND_IP=$(aws ec2 describe-instances \
-              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --query "Reservations[*].Instances[*].PublicIpAddress" \
-              --output text)
-           echo "${BACKEND_IP}"  
-           curl "http://${BACKEND_IP}:3030/api/status"
-              
-      - run:
-          name: Frontend smoke test
-          command: |
-            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-2.amazonaws.com/#/employees"
-            if curl -s ${URL} | grep "Welcome"
-            then
-              return 0
-            else
-              return 1
-            fi
+            export BACKEND_URL=$(sed -n 2p .circleci/ansible/inventory.txt)
+            echo $BACKEND_URL
 
     
 #   smoke-test:
