@@ -19,10 +19,12 @@
     path: /home/ubuntu/backend
     state: directory
 
-- name: Copy backend dist files web server
-  copy:
-    src: /root/project/artifact.tar.gz
-    dest: /home/ubuntu/backend/artifact.tar.gz
+- name: "copy backend binaries"
+  become: true
+  synchronize:
+    src: /root/project/backend
+    dest: /home/ubuntu/
+    recursive: true
 
 - name: Uncompress Backend
   shell: |
