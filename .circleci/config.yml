@@ -381,7 +381,6 @@ jobs:
       - revert-migrations
       - destroy-environment
 
-<<<<<<< HEAD
   # smoke-test:
   #   docker:
   #     - image: python:3.9.0-alpine
@@ -401,8 +400,6 @@ jobs:
   #           echo $BACKEND_URL
 
     
-=======
->>>>>>> parent of 971b5bb (moving on to start smoke test)
 #   smoke-test:
 #     docker:
 #       # Lightweight Docker image 
