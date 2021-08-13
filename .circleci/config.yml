@@ -394,8 +394,9 @@ jobs:
           name: Install dependencies
           command: |
             apk add update ansible curl rsync openssh nodejs npm
-      - run: Get backend url
-          command: | 
+      - run: 
+          name: Get backend url
+          command: |
             export BACKEND_URL=$(sed -n 2p .circleci/ansible/inventory.txt)
             echo $BACKEND_URL
 
