@@ -342,8 +342,8 @@ jobs:
             echo "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}"
       - persist_to_workspace:
            root: .
-           paths:
-             - ~/frontend/
+          #  paths:
+          #    - ~/frontend/
       # Here's where you will add some code to rollback on failure
       - revert-migrations     
       - destroy-environment 
