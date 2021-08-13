@@ -1,47 +1,89 @@
 ---
-  - name: "show remote environment"
-    shell: env
-  - name: "test directory stat"
-    become: true
-    shell: ls -la; pwd
+- name: "install dependencies."
+  become: true
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+    update_cache: yes
 
-  - name: "copy backend binaries"
-    become: true
-    synchronize:
-      src: /root/project/backend
-      dest: /home/ubuntu/
-      recursive: true
+- name: "install pm2"
+  become: true
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
 
-  # - name: "copy node_modules"
-  #   become: true
-  #   synchronize:
-  #     src: /usr/local/lib/node_modules
-  #     dest: /home/ubuntu/
-  #     recursive: true
+- name: Creates directory
+  file:
+    path: /home/ubuntu/backend
+    state: directory
 
-  - name: "delete anything that might already be running"
-    become: true
-    command: pm2 delete all
-    ignore_errors: true
+- name: Copy backend dist files web server
+  copy:
+    src: /root/project/artifact.tar.gz
+    dest: /home/ubuntu/backend/artifact.tar.gz
 
-  - name: "start server"
-    become: true
-    command: |
-          cd /home/ubuntu/
-          npm install
-          npm run build
-          pm2 start npm --name backedn -- start
+- name: Uncompress Backend
+  shell: |
+    cd /home/ubuntu/backend
+    tar xvzf artifact.tar.gz -C .
+    ls -la
+    
+- name: Build
+  become: true
+  shell: |
+    cd /home/ubuntu/backend
+    npm install
+    npm run build
+- name: Start PM2
+  shell: |
+    cd /home/ubuntu/backend 
+    pm2 start npm --name backend -- start
+# ---
+#   - name: "show remote environment"
+#     shell: env
+#   - name: "test directory stat"
+#     become: true
+#     shell: ls -la; pwd
 
-   # args:
-     # chdir: /home/ubuntu/dist
-    environment:
-     ENVIRONMENT: production
-     TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION') }}"
-     TYPEORM_MIGRATIONS_DIR: "./migrations"
-     TYPEORM_MIGRATIONS: "./migrations/*.js"
-     TYPEORM_ENTITIES: "./modules/domain/**/*.entity.js"
-     TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST') }}"
-     TYPEORM_PORT: "{{ lookup('env', 'TYPEORM_PORT') }}"
-     TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME') }}"
-     TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD') }}"
-     TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE') }}"
+#   - name: "copy backend binaries"
+#     become: true
+#     synchronize:
+#       src: /root/project/backend
+#       dest: /home/ubuntu/
+#       recursive: true
+
+#   # - name: "copy node_modules"
+#   #   become: true
+#   #   synchronize:
+#   #     src: /usr/local/lib/node_modules
+#   #     dest: /home/ubuntu/
+#   #     recursive: true
+
+#   - name: "delete anything that might already be running"
+#     become: true
+#     command: pm2 delete all
+#     ignore_errors: true
+
+#   - name: "start server"
+#     become: true
+#     command: |
+#           cd /home/ubuntu/
+#           npm install
+#           npm run build
+#           pm2 start npm --name backedn -- start
+
+#    # args:
+#      # chdir: /home/ubuntu/dist
+#     environment:
+#      ENVIRONMENT: production
+#      TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION') }}"
+#      TYPEORM_MIGRATIONS_DIR: "./migrations"
+#      TYPEORM_MIGRATIONS: "./migrations/*.js"
+#      TYPEORM_ENTITIES: "./modules/domain/**/*.entity.js"
+#      TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST') }}"
+#      TYPEORM_PORT: "{{ lookup('env', 'TYPEORM_PORT') }}"
+#      TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME') }}"
+#      TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD') }}"
+#      TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE') }}"
