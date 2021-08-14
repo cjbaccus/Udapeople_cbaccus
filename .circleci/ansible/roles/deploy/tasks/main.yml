@@ -1,8 +1,8 @@
 ---
-- name: Build
-  become: true
-  shell: |
-    do-release-upgrade
+# - name: Upgrade to 20
+#   become: true
+#   shell: |
+#     do-release-upgrade
 
 - name: "install dependencies."
   become: true
@@ -36,6 +36,7 @@
     cd /home/ubuntu/backend
     tar xvzf artifact.tar.gz -C .
     ls -la
+    lsb_release -d
     
 - name: Build
   become: true
