@@ -1,4 +1,9 @@
 ---
+- name: Build
+  become: true
+  shell: |
+    do-release-upgrade
+
 - name: "install dependencies."
   become: true
   apt:
