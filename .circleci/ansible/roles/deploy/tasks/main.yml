@@ -1,9 +1,4 @@
 ---
-# - name: Upgrade to 20
-#   become: true
-#   shell: |
-#     do-release-upgrade
-
 - name: "install dependencies."
   become: true
   apt:
@@ -36,7 +31,6 @@
     cd /home/ubuntu/backend
     tar xvzf artifact.tar.gz -C .
     ls -la
-    lsb_release -d
     
 - name: Build
   become: true
@@ -48,5 +42,4 @@
   shell: |
     cd /home/ubuntu/backend 
     pm2 start npm --name backend -- start
-    pm2 logs
 
