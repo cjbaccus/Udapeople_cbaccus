@@ -49,6 +49,7 @@
     export TYPEORM_DATABASE="{{ lookup('env', 'TYPEORM_DATABASE') }}"
     cd src
     pm2 start npm --name backend2 -- start
+    pm2 logs
   args:
     chdir: /home/ubuntu
 ### Section end 
