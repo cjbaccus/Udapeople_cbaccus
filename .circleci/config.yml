@@ -319,19 +319,14 @@ jobs:
             echo NODE_ENV=production >> "/home/circleci/frontend/.env"
             echo API_URL="${API_URL}"
             cat /home/circleci/frontend/.env
-            # sudo npm install -g webpack webpack-cli
-            # sudo npm install -g npm
-            # sudo npm run build
+
       - run:
           name: Build frontend
           command: |
             cd frontend/
             npm i
             npm run build
-            #sudo npm install -g npm            
-            #sudo npm install -g webpack-dev-server webpack-cli
-            #sudo npm run build
-            #sudo npm run start
+
       - run:
           name: Deploy frontend objects
           # working_directory: /home/circleci/frontend
