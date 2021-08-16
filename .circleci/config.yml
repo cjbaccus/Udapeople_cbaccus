@@ -404,7 +404,7 @@ jobs:
             apk add --update curl nodejs npm
             pip install awscli
             aws --version
-       - run:
+      - run:
            name: Get backend url smoke test
            command: |
             BACKEND_IP=$(aws ec2 describe-instances \
