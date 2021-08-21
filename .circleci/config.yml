@@ -40,6 +40,26 @@ commands:
               ls -la
               npm run migrations:revert
             fi
+  write-env-variables:
+    description: Writes environment variables to env file
+    steps:
+      - run:
+          name: Write to .env file
+          command: |
+            echo ENVIROMENT=production > "backend/.env"
+            echo NODE_ENV=production >> "backend/.env"
+            echo TYPEORM_CONNECTION=postgres >> "backend/.env"
+            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
+            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
+            echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "backend/.env"
+            echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
+            echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
+            echo TYPEORM_MIGRATIONS=$TYPEORM_MIGRATIONS >> "backend/.env"
+            echo TYPEORM_MIGRATIONS_DIR=$TYPEORM_MIGRATIONS_DIR >> "backend/.env"
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
+
 jobs:
   install-backend-dependencies:
     docker:
@@ -351,8 +371,8 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["44:d1:f0:b5:a1:df:17:11:0c:01:5c:e6:03:a1:86:53"]
       - attach_workspace:
-          at: .
-    
+          at: ~/
+      - write-env-variables:
       - run:
           name: Install dependencies
           working_directory: ./.circleci/ansible
@@ -371,16 +391,16 @@ jobs:
             export host_key_checking=False
             export record_host_keys=False
             echo ENVIRONMENT=production > "../../backend/.env"
-            echo TYPEORM_CONNECTION=postgres >> "../../backend/.env"
-            echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "../../backend/.env"
-            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "../../backend/.env"
-            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "../../backend/.env"
-            echo NODE_ENV=production >> "../../backend/.env"
-            echo TYPEORM_HOST=$TYPEORM_HOST >> "../../backend/.env"
-            echo TYPEORM_PORT=$TYPEORM_PORT >> "../../backend/.env"
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "../../backend/.env"
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "../../backend/.env"
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "../../backend/.env"
+            # echo TYPEORM_CONNECTION=postgres >> "../../backend/.env"
+            # echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "../../backend/.env"
+            # echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "../../backend/.env"
+            # echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "../../backend/.env"
+            # echo NODE_ENV=production >> "../../backend/.env"
+            # echo TYPEORM_HOST=$TYPEORM_HOST >> "../../backend/.env"
+            # echo TYPEORM_PORT=$TYPEORM_PORT >> "../../backend/.env"
+            # echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "../../backend/.env"
+            # echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "../../backend/.env"
+            # echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "../../backend/.env"
             cat ../../backend/.env
             cat inventory
             ansible-playbook -i inventory deploy-backend.yml -vv
@@ -404,15 +424,15 @@ jobs:
             apk add --update curl nodejs npm
             pip install awscli
             aws --version
-      #- run:
-      #     name: Get backend url smoke test
-      #     command: |
-      #      BACKEND_IP=$(aws ec2 describe-instances \
-      #         --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-      #         --query "Reservations[*].Instances[*].PublicIpAddress" \
-      #         --output text)
-      #      echo "${BACKEND_IP}"  
-      #      curl "http://${BACKEND_IP}:3030/api/status"
+      - run:
+          name: Get backend url smoke test
+          command: |
+           BACKEND_IP=$(aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --query "Reservations[*].Instances[*].PublicIpAddress" \
+              --output text)
+           echo "${BACKEND_IP}"  
+           curl "http://${BACKEND_IP}:3030/api/status"
               
       - run:
           name: Frontend smoke test
