@@ -371,7 +371,7 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["44:d1:f0:b5:a1:df:17:11:0c:01:5c:e6:03:a1:86:53"]
       - attach_workspace:
-          at: ~/
+          at: .
       - write-env-variables
       - run:
           name: Install dependencies
