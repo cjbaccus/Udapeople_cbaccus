@@ -395,7 +395,7 @@ jobs:
             export ANSIBLE_HOST_KEY_CHECKING=False 
             export host_key_checking=False
             export record_host_keys=False
-            echo ENVIRONMENT=production > "../../backend/.env"
+            #echo ENVIRONMENT=production > "../../backend/.env"
             cat ../../backend/.env
             cat inventory
             ansible-playbook -i inventory deploy-backend.yml -vv
