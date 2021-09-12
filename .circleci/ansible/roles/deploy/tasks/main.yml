@@ -37,7 +37,7 @@
 - name: Install backed dependencies with NPM
   command: npm install --production
   args:
-    chdir: /home/ubuntu
+    chdir: /home/ubuntu/backend
 - name: start backend with pm2
   shell: |
     export ENVIRONMENT=production
@@ -47,11 +47,12 @@
     export TYPEORM_USERNAME="{{ lookup('env', 'TYPEORM_USERNAME') }}"
     export TYPEORM_PASSWORD="{{ lookup('env', 'TYPEORM_PASSWORD') }}"
     export TYPEORM_DATABASE="{{ lookup('env', 'TYPEORM_DATABASE') }}"
-    cd src
+    cd /home/ubuntu/backend
     pm2 start npm --name backend2 -- start
+    npm run start
     # pm2 logs
   args:
-    chdir: /home/ubuntu
+    chdir: /home/ubuntu/backend
 ### Section end 
 
 # - name: Build
