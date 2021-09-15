@@ -113,7 +113,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backed-build]
+          keys: [backend-build]
       - run:
           name: Backend build
           command: |
@@ -350,18 +350,18 @@ jobs:
             # sudo ./aws/install
             ls -la ~/project/
             ls -la ~/frontend/
-            ls -la /home/circleci/frontend/
+            ls -la ~/circleci/frontend/
       - run:
           name: Get backend url
-          working_directory: /home/circleci/frontend
+          working_directory: ~/circleci/frontend
           command: |
             sudo chmod -R 777 /usr/local/lib/node_modules
             export API_URL=$(curl -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET https://api.memstash.io/values/BACKEND_URL)
             echo "${API_URL}"
-            echo ENVIRONMENT=production > "/home/circleci/frontend/.env"
-            echo NODE_ENV=production >> "/home/circleci/frontend/.env"
+            echo ENVIRONMENT=production > "~/circleci/frontend/.env"
+            echo NODE_ENV=production >> "~/circleci/frontend/.env"
             echo API_URL="${API_URL}"
-            cat /home/circleci/frontend/.env
+            cat ~/circleci/frontend/.env
 
       - run:
           name: Build frontend
