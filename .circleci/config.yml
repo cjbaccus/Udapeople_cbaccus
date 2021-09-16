@@ -401,7 +401,7 @@ jobs:
       # - attach_workspace:
       #     at: .
       - restore_cache:
-          keys: [build-infra]
+          keys: [build-infra, backend-build]
       - write-env-variables
       - run:
           name: Install dependencies
@@ -426,7 +426,7 @@ jobs:
             export host_key_checking=False
             export record_host_keys=False
             #echo ENVIRONMENT=production > "../../backend/.env"
-
+            tar -C backend -czvf artifact.tar.gz .
             ansible-playbook -i inventory deploy-backend.yml -vv
       # Here's where you will add some code to rollback on failure
       #- revert-migrations
