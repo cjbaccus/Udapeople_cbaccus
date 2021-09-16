@@ -401,7 +401,7 @@ jobs:
       # - attach_workspace:
       #     at: .
       - restore_cache:
-          keys: [backend-build,build-infra]
+          keys: [build-infra]
       - write-env-variables
       - run:
           name: Install dependencies
@@ -417,13 +417,17 @@ jobs:
           name: Deploy backend
           working_directory: ./.circleci/ansible          
           command: |
+            aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:project,Values=udapeople-backend-<< pipeline.parameters.workflow-id >>" \
+              --output text >> inventory
+            cat inventory
             export ANSIBLE_HOST_KEY_CHECKING=False 
             export host_key_checking=False
             export record_host_keys=False
             #echo ENVIRONMENT=production > "../../backend/.env"
-            cat ../../backend/.env
-            cat ~/.circleci/ansible/inventory
-            ansible-playbook -i ~/.circleci/ansible/inventory deploy-backend.yml -vv
+
+            ansible-playbook -i inventory deploy-backend.yml -vv
       # Here's where you will add some code to rollback on failure
       #- revert-migrations
       #- destroy-environment
