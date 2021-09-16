@@ -426,7 +426,7 @@ jobs:
             export host_key_checking=False
             export record_host_keys=False
             #echo ENVIRONMENT=production > "../../backend/.env"
-            tar -C backend -czvf artifact.tar.gz .
+            tar -C ../../backend -czvf artifact.tar.gz .
             ansible-playbook -i inventory deploy-backend.yml -vv
       # Here's where you will add some code to rollback on failure
       #- revert-migrations
