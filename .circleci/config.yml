@@ -366,10 +366,11 @@ jobs:
       - run:
           name: Build frontend
           command: |
-            npm install webpack-dev-server -g
+            sudo npm install webpack-dev-server -g
             cd frontend/
-            npm i
-            npm run build
+            sudo npm audit fix --audit-level=critical --force
+            sudo npm i
+            sudo npm run build
 
       - run:
           name: Deploy frontend objects
