@@ -401,7 +401,7 @@ jobs:
       # - attach_workspace:
       #     at: .
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build,build-infra]
       - write-env-variables
       - run:
           name: Install dependencies
