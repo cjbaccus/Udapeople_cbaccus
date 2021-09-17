@@ -83,10 +83,15 @@
 #     owner: ubuntu
 
 - name: "Install backend dependencies using NPM"
-  command: npm install --production
+  command: npm install latest-version
   args:
     chdir: /home/ubuntu
 
+- name: "npm Update"
+  command: npm update
+  args: 
+    chdir: /home/ubuntu
+    
 - name: "Start backend with pm2"
   shell: |
     export ENVIRONMENT=production
