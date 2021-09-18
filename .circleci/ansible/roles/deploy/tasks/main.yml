@@ -2,7 +2,7 @@
 - name: "install dependencies."
   become: true
   apt:
-    name: ["nodejs", "npm"]
+    name: ["nodejs", "npm", "net-tools"]
     state: latest
     update_cache: yes
 
@@ -91,7 +91,7 @@
   command: npm update
   args: 
     chdir: /home/ubuntu
-    
+
 - name: "Start backend with pm2"
   shell: |
     export ENVIRONMENT=production
@@ -120,4 +120,7 @@
     chdir: /home/ubuntu
   
 - name: "Reinstall NPM"  
-  command: npm install  
+  command: npm install 
+
+- name: "netstat test"
+  command: netstat -tulpn
