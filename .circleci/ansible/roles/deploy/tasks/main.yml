@@ -85,12 +85,12 @@
 - name: "Install backend dependencies using NPM"
   command: npm install latest-version
   args:
-    chdir: /home/ubuntu
+    chdir: /home/ubuntu/backend
 
 - name: "npm Update"
   command: npm update
   args: 
-    chdir: /home/ubuntu
+    chdir: /home/ubuntu/backend
 
 - name: "Start backend with pm2"
   shell: |
@@ -104,7 +104,7 @@
     cd src
     pm2 start npm --name backend -- start
   args:
-    chdir: /home/ubuntu
+    chdir: /home/ubuntu/backend
 
 - name: "Set pm2 start as service"
   become: yes
