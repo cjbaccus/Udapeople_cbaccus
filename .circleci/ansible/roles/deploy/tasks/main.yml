@@ -22,14 +22,14 @@
 - name: "copy backend binaries"
   become: true
   synchronize:
-    src: /root/project/artifact.tar.gz
-    dest: /home/ubuntu/artifact.tar.gz
+    src: /root/project/backend
+    dest: /home/ubuntu/
     recursive: true
 
 - name: Uncompress Backend
   shell: |
     cd /home/ubuntu/backend
-    tar xvzf artifact.tar.gz -C .
+    tar xvzf artifact.tar.gz -C ../
     ls -la
     cp package.json /home/ubuntu/
 
@@ -97,7 +97,7 @@
     export ENVIRONMENT=production
     export NODE_ENV=production
     export TYPEORM_HOST="{{ lookup('env', 'TYPEORM_HOST') }}"
-    export TYPEORM_ENTITIES=./src/modules/**/*.entity.ts
+    export TYPEORM_ENTITIES="{{ lookup('env', 'TYPEORM_ENTITIES') }}"
     export TYPEORM_USERNAME="{{ lookup('env', 'TYPEORM_USERNAME') }}"
     export TYPEORM_PASSWORD="{{ lookup('env', 'TYPEORM_PASSWORD') }}"
     export TYPEORM_DATABASE="{{ lookup('env', 'TYPEORM_DATABASE') }}"
