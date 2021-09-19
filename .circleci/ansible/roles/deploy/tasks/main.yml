@@ -32,6 +32,7 @@
     tar xvzf artifact.tar.gz -C ../
     ls -la
     cp package.json /home/ubuntu/
+    cp -r backend/ /home/ubuntu/
 
 # #### Section added to see what we can get
 # - name: Install backed dependencies with NPM
