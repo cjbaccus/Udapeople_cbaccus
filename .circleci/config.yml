@@ -167,8 +167,6 @@ jobs:
             npm i
             npm audit fix --audit-level=critical --force
             node -v
-      # - restore_cache:
-      #     key: v1-frontend-build
 
   scan-backend:
     docker:
@@ -184,8 +182,6 @@ jobs:
             npm i
             npm audit fix --audit-level=critical --force
             node -v
-      # - restore_cache:
-      #     key: v1-backend-build
 
   deploy-infrastructure:
     docker:
@@ -429,8 +425,8 @@ jobs:
             tar -C ../../backend -czvf artifact.tar.gz .
             ansible-playbook -i inventory deploy-backend.yml -vv
       # Here's where you will add some code to rollback on failure
-      # - revert-migrations
-      # - destroy-environment
+      - revert-migrations
+      - destroy-environment
 
   smoke-test:
     docker:
@@ -458,7 +454,7 @@ jobs:
               --query "Reservations[*].Instances[*].PublicIpAddress" \
               --output text)
            echo "${BACKEND_IP}"  
-           #curl "http://${BACKEND_IP}:3030/api/status"
+           curl "http://${BACKEND_IP}:3030/api/status"
               
       - run:
           name: Frontend smoke test
@@ -535,9 +531,9 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [deploy-frontend]
-      # - smoke-test:
-      #     requires: [deploy-backend, deploy-frontend]
-      # - cloudfront-update:
-      #     requires: [smoke-test]
-      # - cleanup:
-      #     requires: [cloudfront-update]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
