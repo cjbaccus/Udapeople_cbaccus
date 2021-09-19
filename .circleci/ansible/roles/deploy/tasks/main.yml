@@ -22,8 +22,8 @@
 - name: "copy backend binaries"
   become: true
   synchronize:
-    src: /root/project/backend
-    dest: /home/ubuntu/
+    src: /root/project/artifact.tar.gz
+    dest: /home/ubuntu/artifact.tar.gz
     recursive: true
 
 - name: Uncompress Backend
