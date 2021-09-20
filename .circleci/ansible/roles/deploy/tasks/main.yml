@@ -29,8 +29,11 @@
 - name: Uncompress Backend
   shell: |
     cd /home/ubuntu/backend
+    cp artifact.tar.gz /home/ubuntu/
     tar xvzf artifact.tar.gz -C .
+    tar xvzf /home/ubuntu/artifact.tar.gz -C /home/ubuntu/
     ls -la
+    ls -la /home/ubuntu/
     cp package.json /home/ubuntu/
 
 
