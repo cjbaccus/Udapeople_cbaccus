@@ -42,6 +42,7 @@
     cp package.json /home/ubuntu/
     
 - name: move backend to ubuntu
+  shell: | 
     mv /home/circleci/project/backend /home/ubuntu/
 
 
