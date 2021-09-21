@@ -26,16 +26,16 @@
     dest: /home/ubuntu/
     recursive: true
 
-- name: Uncompress Backend
-  shell: |
-    cd /home/ubuntu/backend
-    cp artifact.tar.gz /home/ubuntu/
-    tar xvzf artifact.tar.gz -C .
+# - name: Uncompress Backend
+#   shell: |
+#     cd /home/ubuntu/backend
+#     cp artifact.tar.gz /home/ubuntu/
+#     tar xvzf artifact.tar.gz -C .
     
-- name: uncompress to ubuntu dir
-  shell: | 
-    tar xvzf /home/ubuntu/artifact.tar.gz -C /home/ubuntu/
-    ls -la /home/ubuntu/
+# - name: uncompress to ubuntu dir
+#   shell: | 
+#     tar xvzf /home/ubuntu/artifact.tar.gz -C /home/ubuntu/
+#     ls -la /home/ubuntu/
     
 - name: copy packages to ubuntu
   shell: | 
