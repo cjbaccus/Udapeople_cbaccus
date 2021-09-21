@@ -31,10 +31,17 @@
     cd /home/ubuntu/backend
     cp artifact.tar.gz /home/ubuntu/
     tar xvzf artifact.tar.gz -C .
+    
+- name: uncompress to ubuntu dir
+   shell: | 
     tar xvzf /home/ubuntu/artifact.tar.gz -C /home/ubuntu/
-    ls -la /home/ubuntu/backend/
     ls -la /home/ubuntu/
+    
+- name: copy packages to ubuntu
+  shell: | 
     cp package.json /home/ubuntu/
+    
+- name: move backend to ubuntu
     mv /home/circleci/project/backend /home/ubuntu/
 
 
