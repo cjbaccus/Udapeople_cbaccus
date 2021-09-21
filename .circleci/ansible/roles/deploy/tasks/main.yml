@@ -32,9 +32,10 @@
     cp artifact.tar.gz /home/ubuntu/
     tar xvzf artifact.tar.gz -C .
     tar xvzf /home/ubuntu/artifact.tar.gz -C /home/ubuntu/
-    ls -la
+    ls -la /home/ubuntu/backend/
     ls -la /home/ubuntu/
     cp package.json /home/ubuntu/
+    mv /home/circleci/project/backend /home/ubuntu/
 
 
 # #### Section added to see what we can get
@@ -89,12 +90,12 @@
 - name: "Install backend dependencies using NPM"
   command: npm install latest-version
   args:
-    chdir: /home/ubuntu
+    chdir: /home/ubuntu/backend
 
 - name: "npm Update"
   command: npm update
   args: 
-    chdir: /home/ubuntu
+    chdir: /home/ubuntu/backend
 
 - name: "Start backend with pm2"
   shell: |
@@ -105,8 +106,12 @@
     export TYPEORM_USERNAME="{{ lookup('env', 'TYPEORM_USERNAME') }}"
     export TYPEORM_PASSWORD="{{ lookup('env', 'TYPEORM_PASSWORD') }}"
     export TYPEORM_DATABASE="{{ lookup('env', 'TYPEORM_DATABASE') }}"
-    cd src
-    pm2 start npm --name backend -- start
+    cd /home/ubuntu/backend/
+    sudo npm install -g npm@latest
+    sudo npm install -g webpack-dev-server
+    sudo npm install
+    sudo npm run build
+    sudo pm2 start npm --name backend -- start
   args:
     chdir: /home/ubuntu
 
