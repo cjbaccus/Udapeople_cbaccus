@@ -33,7 +33,7 @@
     tar xvzf artifact.tar.gz -C .
     
 - name: uncompress to ubuntu dir
-   shell: | 
+  shell: | 
     tar xvzf /home/ubuntu/artifact.tar.gz -C /home/ubuntu/
     ls -la /home/ubuntu/
     
