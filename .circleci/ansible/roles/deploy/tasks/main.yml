@@ -39,14 +39,16 @@
     cat /proc/sys/net/ipv6/conf/all/disable_ipv6
 
 - name: Install nodesource
-  #become: true
-  shell: | 
-    sudo curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - 
-    sudo apt-get install -y nodejs
-    sudo npm install -g n 
-    sudo npm install
-    sudo npm run build
-    sudo pm2 start npm --name backend -- run start
+  become: true
+  shell: |
+    pm2 delete all
+    cd /home/ubuntu/backend/ 
+    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - 
+    apt-get install -y nodejs
+    npm install -g n 
+    npm install
+    npm run build
+    pm2 start npm --name backend -- run start
 
 # - name: Uncompress Backend
 #   shell: |
