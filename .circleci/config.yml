@@ -425,8 +425,8 @@ jobs:
             tar -C ../../backend -czvf artifact.tar.gz .
             ansible-playbook -i inventory deploy-backend.yml -vv
       # Here's where you will add some code to rollback on failure
-      # - revert-migrations
-      ## - destroy-environment
+      - revert-migrations
+      - destroy-environment
 
   smoke-test:
     docker:
@@ -473,13 +473,34 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints: ["44:d1:f0:b5:a1:df:17:11:0c:01:5c:e6:03:a1:86:53"]
+      - run:
+          name: Install dependancies
+          command: |
+            yum -y install tar gzip
       - run:
           name: Update cloudfront distribution
           command: |
+            export OldWorkflowID=$(aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --no-paginate --output text)
+            echo OldWorkflowID: "$OldWorkflowID"
+
+            curl -H "Content-Type: text/plain" -H "token 91b68998-2d69-4b31-93c2-4f3f42925a80" --request PUT \
+              --data "$OldWorkflowID" https://api.memstash.io/values/id_${CIRCLE_WORKFLOW_ID:0:7}
+            
+            export STACKS=$(aws cloudformation list-stacks \
+            --query "StackSummaries[*].StackName" \
+            --stack-status-filter CREATE_COMPLETE \
+            --no-paginate --output text)
+            echo STACKS: "$STACKS"
+
+            echo "Update Cloudfront Stack"
+
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
-              --stack-name udapeople-cloudfront-${CIRCLE_WORKFLOW_ID} \
-              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID}" \
+              --region ${AWS_DEFAULT_REGION} \
+              --stack-name udapeople-cloudfront-${CIRCLE_WORKFLOW_ID:0:7} \
+              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople-cloudfront
 
   cleanup:
