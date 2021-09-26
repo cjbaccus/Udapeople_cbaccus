@@ -496,12 +496,12 @@ jobs:
 
             echo "Update Cloudfront Stack"
 
-            # aws cloudformation deploy \
-            #   --template-file .circleci/files/cloudfront.yml \
-            #   --region ${AWS_DEFAULT_REGION} \
-            #   --stack-name udapeople-cloudfront-${CIRCLE_WORKFLOW_ID:0:7} \
-            #   --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
-            #   --tags project=udapeople-cloudfront
+            aws cloudformation deploy \
+              --template-file .circleci/files/cloudfront.yml \
+              --region ${AWS_DEFAULT_REGION} \
+              --stack-name udapeople-cloudfront-${CIRCLE_WORKFLOW_ID:0:7} \
+              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
+              --tags project=udapeople-cloudfront
 
   cleanup:
     docker:
