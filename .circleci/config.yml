@@ -305,9 +305,11 @@ jobs:
           command: |
             npm install
             sudo npm install pm2 -g
-            npm run migrations > migration_status
-            cat migration_status
-            wc -l migration_status
+            pwd
+            ls -la
+            # npm run migrations > migration_status
+            # cat migration_status
+            # wc -l migration_status
       - run:
           name: Send migration results to memstash
           working_directory: ./backend
