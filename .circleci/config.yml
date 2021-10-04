@@ -307,7 +307,6 @@ jobs:
             sudo npm install pm2 -g
             pwd
             ls -la
-            cat .env
             npm run migrations > migration_status
             cat migration_status
             wc -l migration_status
