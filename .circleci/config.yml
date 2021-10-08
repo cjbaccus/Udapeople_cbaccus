@@ -504,7 +504,7 @@ jobs:
               --region ${AWS_DEFAULT_REGION} \
               --stack-name udapeople-cloudfront-${CIRCLE_WORKFLOW_ID:0:7} \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
-              --tags project=udapeople-cloudfront
+              --tags project=udapeople-cbaccus-cloudfront
 
   cleanup:
     docker:
