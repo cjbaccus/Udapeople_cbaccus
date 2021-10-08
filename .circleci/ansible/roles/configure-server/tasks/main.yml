@@ -12,7 +12,7 @@
   - name: "install nodejs and npm"
     become: yes
     apt:
-      name: ["nodejs", "npm"]
+      name: ["nodejs", "npm", "git"]
       state: latest
       update_cache: yes
 
@@ -34,3 +34,4 @@
       global: yes
       production: yes
       state: present
+      udpate_cache: yes

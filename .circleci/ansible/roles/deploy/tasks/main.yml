@@ -2,7 +2,7 @@
 - name: "install dependencies."
   become: true
   apt:
-    name: ["nodejs", "npm"]
+    name: ["nodejs", "npm", "net-tools"]
     state: latest
     update_cache: yes
 
@@ -26,20 +26,142 @@
     dest: /home/ubuntu/
     recursive: true
 
-- name: Uncompress Backend
+- name: Disable IPv6 with sysctl
+  become: true
+  sysctl: name={{ item }} value=1 state=present reload=yes
+  with_items:
+    - net.ipv6.conf.all.disable_ipv6
+    - net.ipv6.conf.default.disable_ipv6
+    - net.ipv6.conf.lo.disable_ipv6
+
+- name: Test for no ipv6
   shell: |
-    cd /home/ubuntu/backend
-    tar xvzf artifact.tar.gz -C .
-    ls -la
-    
-- name: Build
+    cat /proc/sys/net/ipv6/conf/all/disable_ipv6
+
+- name: Install nodesource
   become: true
   shell: |
-    cd /home/ubuntu/backend
+    pm2 delete all
+    cd /home/ubuntu/backend/ 
+    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - 
+    apt-get install -y nodejs
+    npm install -g n 
     npm install
     npm run build
-- name: Start PM2
-  shell: |
-    cd /home/ubuntu/backend 
-    pm2 start npm --name backend -- start
+    pm2 start npm --name backend -- run start
 
+# - name: Uncompress Backend
+#   shell: |
+#     cd /home/ubuntu/backend
+#     cp artifact.tar.gz /home/ubuntu/
+#     tar xvzf artifact.tar.gz -C .
+    
+# - name: uncompress to ubuntu dir
+#   shell: | 
+#     tar xvzf /home/ubuntu/artifact.tar.gz -C /home/ubuntu/
+#     ls -la /home/ubuntu/
+    
+# - name: copy packages to ubuntu
+#   shell: | 
+#     cp package.json /home/ubuntu/
+    
+# - name: move backend to ubuntu
+#   shell: | 
+#     mv /home/circleci/project/backend /home/ubuntu/
+
+
+# #### Section added to see what we can get
+# - name: Install backed dependencies with NPM
+#   command: npm install --production
+#   args:
+#     chdir: /home/ubuntu
+# - name: start backend with pm2
+#   shell: |
+#     export ENVIRONMENT=production
+#     export NODE_ENV=production
+#     export TYPEORM_HOST="{{ lookup('env', 'TYPEORM_HOST') }}"
+#     export TYPEORM_ENTITIES="{{ lookup('env', 'TYPEORM_ENTITIES') }}"
+#     export TYPEORM_USERNAME="{{ lookup('env', 'TYPEORM_USERNAME') }}"
+#     export TYPEORM_PASSWORD="{{ lookup('env', 'TYPEORM_PASSWORD') }}"
+#     export TYPEORM_DATABASE="{{ lookup('env', 'TYPEORM_DATABASE') }}"
+#     cd src
+#     pm2 start npm --name backend2 -- start
+#     # pm2 logs
+#   args:
+#     chdir: /home/ubuntu
+# ## Section end 
+
+# - name: Build
+#   become: true
+#   shell: |
+#     cd /home/ubuntu/backend
+#     npm install
+#     npm run build
+# - name: Start PM2
+#   shell: |
+#     cd /home/ubuntu/backend 
+#     pm2 start npm --name backend -- start
+
+# - name: Copy backend dist files web server
+#   copy:
+#     src: /root/project/artifact.tar.gz
+#     dest: /home/ubuntu/artifact.tar.gz
+
+# - name: Uncompress Backend
+#   shell: |
+#     cd /home/ubuntu
+#     tar xvzf artifact.tar.gz -C .
+#     ls -la
+# - name: "Copy package.json to server"
+#   become: true
+#   copy:
+#     src: /root/project/backend/package.json
+#     dest: /home/ubuntu/
+#     owner: ubuntu
+
+# - name: "Install backend dependencies using NPM"
+#   command: npm install latest-version
+#   args:
+#     chdir: /home/ubuntu/backend
+
+# - name: "npm Update"
+#   command: npm update
+#   args: 
+#     chdir: /home/ubuntu/backend
+
+# - name: "Start backend with pm2"
+#   shell: |
+#     export ENVIRONMENT=production
+#     export NODE_ENV=production
+#     export TYPEORM_HOST="{{ lookup('env', 'TYPEORM_HOST') }}"
+#     export TYPEORM_ENTITIES="{{ lookup('env', 'TYPEORM_ENTITIES') }}"
+#     export TYPEORM_USERNAME="{{ lookup('env', 'TYPEORM_USERNAME') }}"
+#     export TYPEORM_PASSWORD="{{ lookup('env', 'TYPEORM_PASSWORD') }}"
+#     export TYPEORM_DATABASE="{{ lookup('env', 'TYPEORM_DATABASE') }}"
+#     cd /home/ubuntu/backend/
+#     sudo npm install -g npm@latest
+#     sudo npm install -g webpack-dev-server
+#     sudo npm install
+#     sudo npm run build
+#     sudo pm2 start npm --name backend -- start
+#   args:
+#     chdir: /home/ubuntu
+
+# - name: "Set pm2 start as service"
+#   become: yes
+#   shell: |
+#     env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
+    
+# - name: "clear npm cache"  
+#   command: npm cache clean --force
+  
+# - name: "delete Node_Modules"  
+#   command: rm -rf node_modules
+#   args:
+#     chdir: /home/ubuntu
+  
+# - name: "Reinstall NPM"  
+#   command: npm install 
+
+- name: "netstat test"
+  command: netstat -tulpn
