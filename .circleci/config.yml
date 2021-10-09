@@ -509,8 +509,7 @@ jobs:
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople-cbaccus-cloudfront
 
-            export CFFinal=$(aws cloudformation list-exports \
-            --query "Exports[?Name==\`WorkflowID\`.Value" \
+            export CFFinal=$(aws cloudformation list-distributions \
             --no-paginate --output text)
             echo CFFinal: "$CFFinal"
 
