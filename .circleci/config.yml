@@ -492,7 +492,7 @@ jobs:
               --data "$OldWorkflowID" https://api.memstash.io/values/id_${CIRCLE_WORKFLOW_ID:0:7}
             
             echo "Completed memstash"
-            
+
             export STACKS=$(aws cloudformation list-stacks \
             --query "StackSummaries[*].StackName" \
             --stack-status-filter "CREATE_COMPLETE" \
@@ -500,7 +500,8 @@ jobs:
             echo STACKS: "$STACKS"
 
             echo "Update Cloudfront Stack"
-
+            echo ${CIRCLE_WORKFLOW_ID:0:7}
+            
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
               --region ${AWS_DEFAULT_REGION} \
