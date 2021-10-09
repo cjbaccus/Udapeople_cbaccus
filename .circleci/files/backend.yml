@@ -11,7 +11,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupName: !Sub UdaPeople-${ID}
-      GroupDescription: Allow port 22 and port 3030.
+      GroupDescription: Allow port 22 and port 3030 also add 80 and 443.
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 22
@@ -37,6 +37,12 @@ Resources:
           FromPort: 9100
           ToPort: 9100
           CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
 
   EC2Instance:
     Type: AWS::EC2::Instance
