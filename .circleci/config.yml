@@ -501,7 +501,7 @@ jobs:
 
             echo "Update Cloudfront Stack"
             echo ${CIRCLE_WORKFLOW_ID:0:7}
-            
+
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
               --region ${AWS_DEFAULT_REGION} \
@@ -522,7 +522,7 @@ jobs:
              --no-paginate --output text)      
             
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
-            --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+            --stack-status-filter "CREATE_COMPLETE" --no-paginate --output text)) 
             echo Old Workflow Id: "${OldWorkflowID}"
             echo Current Workflow Id: "${CIRCLE_WORKFLOW_ID}"
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
