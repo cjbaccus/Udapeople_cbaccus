@@ -342,6 +342,7 @@ jobs:
           command: |
             sudo chmod -R 777 /usr/local/lib/node_modules
             export API_URL=$(curl -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET https://api.memstash.io/values/BACKEND_URL)
+            echo "${API_URL" >> "frontend/.env"
             echo "${API_URL}"
 
       - run:
