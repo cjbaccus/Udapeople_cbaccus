@@ -47,7 +47,7 @@ commands:
           name: Write to .env file
           command: |
             echo ENVIROMENT=production > "backend/.env"
-            # echo NODE_ENV=production >> "backend/.env"
+            echo NODE_ENV=production >> "backend/.env"
             echo TYPEORM_CONNECTION=postgres >> "backend/.env"
             echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
             echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
@@ -343,10 +343,6 @@ jobs:
             sudo chmod -R 777 /usr/local/lib/node_modules
             export API_URL=$(curl -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET https://api.memstash.io/values/BACKEND_URL)
             echo "${API_URL}"
-            # echo ENVIRONMENT=production > "~/circleci/frontend/.env"
-            # echo NODE_ENV=production >> "~/circleci/frontend/.env"
-            # echo API_URL="${API_URL}"
-            # cat ~/circleci/frontend/.env
 
       - run:
           name: Build frontend
@@ -410,7 +406,7 @@ jobs:
             export ANSIBLE_HOST_KEY_CHECKING=False 
             export host_key_checking=False
             export record_host_keys=False
-            #echo ENVIRONMENT=production > "../../backend/.env"
+            echo NODE_ENV=production >> "../../backend/.env"
             tar -C ../../backend -czvf artifact.tar.gz .
             ansible-playbook -i inventory deploy-backend.yml -vv
       # Here's where you will add some code to rollback on failure
