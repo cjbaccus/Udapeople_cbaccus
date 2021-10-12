@@ -338,7 +338,7 @@ jobs:
 
       - run:
           name: Get backend url
-          working_directory: ~/circleci/frontend
+          working_directory: ~/.circleci/frontend
           command: |
             sudo chmod -R 777 /usr/local/lib/node_modules
             export API_URL=$(curl -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET https://api.memstash.io/values/BACKEND_URL)
@@ -365,7 +365,7 @@ jobs:
             echo "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}"
       - save_cache:
           key: deploy-frontend
-          paths: [~/frontend]
+          paths: [~.cirlceci/frontend]
       # - persist_to_workspace:
       #     root: .
       #     paths:
