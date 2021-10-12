@@ -347,8 +347,6 @@ jobs:
             export API_DNS="http://${BACKENDDNS}:3030"
             echo "API_URL=${API_URL}" >> .env
             echo "${API_DNS}" >> .env
-            curl "http://${BACKENDDNS}:3030/api/status"
-
             cat .env && pwd
             echo "${API_URL}"
 
