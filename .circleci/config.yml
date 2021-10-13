@@ -341,11 +341,13 @@ jobs:
           working_directory: ~/project/frontend
           command: |
             sudo chmod -R 777 /usr/local/lib/node_modules
-            export API_URL=$(curl -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET https://api.memstash.io/values/BACKEND_URL)
+            # export API_URL=$(curl -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET https://api.memstash.io/values/BACKEND_URL)
+            BACKENDIP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
             touch .env
             BACKENDDNS=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicDnsName' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)            
+            export API_URL="http://${BACKENDIP}:3030"
             export API_DNS="http://${BACKENDDNS}:3030"
-            echo "API_URL=${API_URL}" >> .env
+            echo "${API_URL}" >> .env
             echo "${API_DNS}" >> .env
 
             cat .env && pwd
