@@ -217,7 +217,7 @@ jobs:
             echo API_URL="http://${BACKEND_IP}:3030" >> "frontend/.env"
             cat frontend/.env
             curl -H "Content-Type: text/plain" -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request PUT --data "http://$BACKEND_IP:3030" https://api.memstash.io/values/BACKEND_URL
-            curl -H "Content-Type: text/plain" -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET --data https://api.memstash.io/values/BACKEND_URL
+            # curl -H "Content-Type: text/plain" -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET --data https://api.memstash.io/values/BACKEND_URL
       - run:
           name: Ensure front-end infrastructure exist
           working_directory: ./.circleci/files
