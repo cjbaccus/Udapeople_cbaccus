@@ -342,18 +342,19 @@ jobs:
           working_directory: ~/project/frontend
           command: |
             sudo chmod -R 777 /usr/local/lib/node_modules
-            export API_URL=$(aws ec2 --region us-east-1 describe-instances \
-             --filters Name=instance-state-name,Values=running Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} \
-             --query 'Reservations[*].Instances[*].PublicIpAddress' \
-             --output text)
-            # export API_URL=$(curl -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET https://api.memstash.io/values/BACKEND_URL)
+            # export API_URL=$(aws ec2 --region us-east-1 describe-instances \
+            #  --filters Name=instance-state-name,Values=running Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} \
+            #  --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            #  --output text)
+            export API_URL=$(curl -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET https://api.memstash.io/values/BACKEND_URL)
             touch .env
-            BACKENDDNS=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicDnsName' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)            
-            export API_DNS="http://${BACKENDDNS}:3030"
+            # BACKENDDNS=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicDnsName' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)            
+            # export API_DNS="http://${BACKENDDNS}:3030"
+            
             # echo "API_URL=${API_URL}" >> .env
             echo "${API_URL}"
             echo "${API_URL}" >> .env
-            echo "${API_DNS}" >> .env
+            # echo "${API_DNS}" >> .env
             cat .env && pwd
             # echo "${API_URL}"
 
