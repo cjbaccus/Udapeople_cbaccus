@@ -339,7 +339,7 @@ jobs:
 
       - run:
           name: Get backend url
-          working_directory: /home/project/frontend
+          working_directory: /home/circleci/project/frontend
           command: |
             sudo chmod -R 777 /usr/local/lib/node_modules
             # export API_URL=$(aws ec2 --region us-east-1 describe-instances \
