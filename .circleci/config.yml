@@ -178,11 +178,11 @@ jobs:
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
-    section reserved for specifically deploying only to main or branches beginning with rc- 
-    # branches:
-    #   only:
-    #     - main
-    #     - /rc-.*/
+    # section reserved for specifically deploying only to main or branches beginning with rc- 
+    branches:
+      only:
+        - main
+        - /rc-.*/
     steps:
       # Checkout code from git
       - checkout
