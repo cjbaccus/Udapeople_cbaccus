@@ -178,11 +178,6 @@ jobs:
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
-    # section reserved for specifically deploying only to main or branches beginning with rc- 
-    # branches:
-    #   only:
-    #     - main
-    #     - /rc-.*/
     steps:
       # Checkout code from git
       - checkout
@@ -517,10 +512,19 @@ workflows:
           requires: [build-frontend]
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [main]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
+          filters:
+            branches:
+              only: [main]
       - run-migrations:
           requires: [configure-infrastructure]
+          filters:
+            branches:
+              only: [main]
       - deploy-frontend:
           requires: [run-migrations]
       - deploy-backend:
