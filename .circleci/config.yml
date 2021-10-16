@@ -102,10 +102,6 @@ jobs:
             ls -la
             npm i
             npm run build
-      # - persist_to_workspace:
-      #     root: .
-      #     paths:
-      #       - frontend/dist
 
   build-backend:
     docker:
@@ -120,10 +116,6 @@ jobs:
             cd backend
             npm i
             npm run build
-      # - persist_to_workspace:
-      #     root: .
-      #     paths:
-      #       - backend/dist
 
   test-frontend:
     docker:
@@ -237,16 +229,6 @@ jobs:
               --filters "Name=tag:project,Values=udapeople-backend-<< pipeline.parameters.workflow-id >>" \
               --output text >> inventory
               cat inventory
-      # - slack/notify:
-      #     event: fail
-      #     template: basic_fail_1
-      # - slack/notify:
-      #     event: pass
-      #     template: success_tagged_deploy_1
-      # - persist_to_workspace:
-      #     root: .
-      #     paths:
-      #       - .circleci/ansible/inventory
 
       - save_cache:
           key: build-infra
@@ -289,8 +271,6 @@ jobs:
       - checkout
       - restore_cache:
           keys: [build-infra, frontend-build, backend-build]
-      # - attach_workspace:
-      #     at: .
       - run:
           name: Install AWS CLI dependencies
           working_directory: /tmp
@@ -331,7 +311,6 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      # Checkout code from git
       - checkout
       - aws-cli/setup
       - restore_cache:
@@ -342,20 +321,13 @@ jobs:
           working_directory: /home/circleci/project/frontend
           command: |
             sudo chmod -R 777 /usr/local/lib/node_modules
-            # export API_URL=$(aws ec2 --region us-east-1 describe-instances \
-            #  --filters Name=instance-state-name,Values=running Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} \
-            #  --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            #  --output text)
-            # export API_URL=$(curl -H "token: 91b68998-2d69-4b31-93c2-4f3f42925a80" --request GET https://api.memstash.io/values/BACKEND_URL)
+
             touch ".env"
             BACKENDDNS=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicDnsName' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)            
             export API_URL="${BACKENDDNS}:3030"
             
             echo "API_URL=${API_URL}" >> .env
             echo "${API_URL}"
-            # echo "${API_URL}" >> ".env"
-            # echo "${API_DNS}" >> .env
-            cat .env && pwd
 
 
       - run:
@@ -369,7 +341,7 @@ jobs:
 
       - run:
           name: Deploy frontend objects
-          # working_directory: /home/circleci/frontend
+
           command: |
             cd frontend/
             ls -la ./dist
@@ -378,11 +350,7 @@ jobs:
       - save_cache:
           key: deploy-frontend
           paths: [~/frontend]
-      # - persist_to_workspace:
-      #     root: .
-      #     paths:
-      #       - ~/frontend/
-      # Here's where you will add some code to rollback on failure
+
       - revert-migrations     
       - destroy-environment 
                     
@@ -393,8 +361,6 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["44:d1:f0:b5:a1:df:17:11:0c:01:5c:e6:03:a1:86:53"]
-      # - attach_workspace:
-      #     at: .
       - restore_cache:
           keys: [build-infra, backend-build]
       - write-env-variables
@@ -436,11 +402,8 @@ jobs:
           fingerprints: ["44:d1:f0:b5:a1:df:17:11:0c:01:5c:e6:03:a1:86:53"]
       - restore_cache:
           keys: [frontend-build, backend-build, infra-build]
-      # - attach_workspace:
-      #     at: .
       - run:
           name: Install dependencies
-          #working_directory: ./.circleci/ansible 
           command: |
             apk add --update curl nodejs npm
             pip install awscli
@@ -566,5 +529,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      # - cleanup:
-      #     requires: [cloudfront-update]
+      - cleanup:
+          requires: [cloudfront-update]
