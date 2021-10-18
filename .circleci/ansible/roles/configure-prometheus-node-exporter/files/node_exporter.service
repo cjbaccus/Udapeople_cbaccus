@@ -6,11 +6,7 @@ After=network-online.target
 [Service]
 User=root
 Type=simple
-ExecStart=/usr/local/bin/node_exporter \
-    --config.file /etc/prometheus/prometheus.yml \
-    --storage.tsdb.path /var/lib/prometheus/ \ 
-    --web.console.templates=/etc/prometheus/consoles \ 
-    --web.console.libraries=/etc/prometheus/console_libraries
+ExecStart=/usr/local/bin/node_exporter
 
 [Install]
 WantedBy=multi-user.target
